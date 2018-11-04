@@ -36,8 +36,8 @@ def main():
 
 def adding(q, c):
     """This function adds customers and customer number to queue.
-    arg1 = queue
-    arg2 = customer number
+    arg1 = queue (FIFO)
+    arg2 = customer number (int)
     Returns True if queue is full, false if adding was successful"""
 
     if len(q) == QUEUE_SIZE:
@@ -48,7 +48,7 @@ def adding(q, c):
 
 def removing(q):
     """This function removes first customer from queue and prints the customer number.
-    arg = queue
+    arg = queue (FIFO)
     returns False if removing was successful, true if queue is empty."""
 
     if len(q) == 0:
