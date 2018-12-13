@@ -273,13 +273,20 @@ def peli():
     tila["pisteet"] = 0
     tila["valinnat"] = 0
     tila["nimi"] = input("Kerro nimesi: ")
+    print("Syötä kentän koko. Kentän tulee olla neliö")
     tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
     tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
     while True:
-        if tila["leveys"] > 20:
-            tila["leveys"] = pyyda_syote("Liian leveä kenttä!\nAnna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
-        elif tila["korkeus"] > 20:
-            tila["korkeus"] = pyyda_syote("Liian korkea kenttä!\nAnna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
+        if tila["leveys"] > 20 or tila["leveys"] < 0:
+            print("Virheellinen syöte!")
+            tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
+        elif tila["korkeus"] > 20 or tila["korkeus"] < 0:
+            print("Virheellinen syöte!")
+            tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
+        elif tila["korkeus"] != tila["leveys"]:
+            print("Kentän leveys ja korkeus tulee olla yhtä suuret!")
+            tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
+            tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
         else:
             break
     tila["kentta"] = muodosta_kentta(tila["leveys"], tila["korkeus"])
