@@ -276,15 +276,15 @@ def peli():
     tila["pisteet"] = 0
     tila["valinnat"] = 0
     tila["nimi"] = input("Kerro nimesi: ")
-    tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
-    tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
+    tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 50): ", "Virheellinen syöte")
+    tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 50): ", "Virheellinen syöte")
     while True:
         if tila["leveys"] > 50 or tila["leveys"] < 0:
             print("Virheellinen syöte!")
-            tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
+            tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 50): ", "Virheellinen syöte")
         elif tila["korkeus"] > 50 or tila["korkeus"] < 0:
             print("Virheellinen syöte!")
-            tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
+            tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 50): ", "Virheellinen syöte")
         else:
             break
     tila["kentta"] = muodosta_kentta(tila["leveys"], tila["korkeus"])
