@@ -221,22 +221,25 @@ def sijainti(x, y, korkeus, leveys):
             leveys  =   Kentän leveys
     Return  paikka  =   Pisteen paikka kentällä"""
 
+    korkeus = korkeus - 1
+    leveys = leveys - 1
+
     if leveys > 0 and korkeus > 0:
         if x == 0 and y == 0:
             paikka = "nurkka"
-        elif x == leveys and y == 0:
+        elif x == korkeus and y == 0:
             paikka = "nurkka"
-        elif x == 0 and y == korkeus:
+        elif x == 0 and y == leveys:
             paikka = "nurkka"
-        elif x == leveys and y == korkeus:
+        elif x == korkeus and y == leveys:
             paikka = "nurkka"
         elif x > 0 and x < leveys and y == 0:
             paikka = "laita"
-        elif x == 0 and y > 0 and y < korkeus:
+        elif x == 0 and y > 0 and y < leveys:
             paikka = "laita"
-        elif x > 0 and x < leveys and y == korkeus:
+        elif x > 0 and x < korkeus and y == leveys:
             paikka = "laita"
-        elif x == leveys and y > 0 and y < korkeus:
+        elif x == korkeus and y > 0 and y < leveys:
             paikka = "laita"
         else:
             paikka = "keski"
@@ -273,19 +276,14 @@ def peli():
     tila["pisteet"] = 0
     tila["valinnat"] = 0
     tila["nimi"] = input("Kerro nimesi: ")
-    print("Syötä kentän koko. Kentän tulee olla neliö")
     tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
     tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
     while True:
-        if tila["leveys"] > 20 or tila["leveys"] < 0:
+        if tila["leveys"] > 50 or tila["leveys"] < 0:
             print("Virheellinen syöte!")
             tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
-        elif tila["korkeus"] > 20 or tila["korkeus"] < 0:
+        elif tila["korkeus"] > 50 or tila["korkeus"] < 0:
             print("Virheellinen syöte!")
-            tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
-        elif tila["korkeus"] != tila["leveys"]:
-            print("Kentän leveys ja korkeus tulee olla yhtä suuret!")
-            tila["leveys"] = pyyda_syote("Anna kentän leveys kokonaislukuna (Max 20): ", "Virheellinen syöte")
             tila["korkeus"] = pyyda_syote("Anna kentän korkeus kokonaislukuna (Max 20): ", "Virheellinen syöte")
         else:
             break
@@ -311,9 +309,12 @@ def laske_ninjat(x, y, kentta):
     että valitussa ruudussa ei ole ninjaa - jos on, 
     sekin lasketaan mukaan."""
     ninjat = 0
-    leveys = len(kentta[0]) - 1
-    korkeus = len(kentta) - 1
+    leveys = len(kentta[0])
+    korkeus = len(kentta)
     paikka = sijainti(x, y, leveys, korkeus)
+    print(paikka)
+    print(x)
+    print(y)
     if paikka == "nurkka":
         if x == 0 and y == 0:
             if kentta[0][1] == "x":
