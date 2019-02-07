@@ -43,30 +43,39 @@ def reitti(verkko, maali):
     maali -= 1
     halvin = 1000
     solmu = 0
+    korkein = 0
+    reitti = [1]
     edellinen = []
     lista = []
     while solmu != maali:
-        print(solmu + 1)
+        if reitti[-1] != solmu + 1:
+            reitti.append(solmu + 1)
         lista = verkko[solmu]
-        while naapurit(lista):
+        while naapurit(lista) and edellinen > 0:
             solmu = edellinen.pop()
             lista = verkko[solmu]
-        edellinen.append(solmu)
-        print(lista)
         seuraava, halvin = etsi_halvin(halvin, lista)
-        if seuraava == None:
-            solmu = edellinen.pop()
+        if halvin == 1000:
+            if len(edellinen) > 0:
+                solmu = edellinen.pop()
+            reitti.pop()
         else:
+            if halvin > korkein:
+                korkein = halvin
             verkko[solmu][seuraava] = 0
+            edellinen.append(solmu)
             solmu = seuraava
-    return "Found it!"
+    reitti.append(maali + 1)
+    return reitti, korkein
 	
 def main():
-    with open("verkko.txt", "r") as kohde:
+    with open("./graph_testdata/graph_ADS2018_10_2.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
-    print(reitti(verkko, int(maali)))
+    vastaus, korkein = reitti(verkko, int(maali))
+    print(vastaus)
+    print(korkein)
     
 
 if __name__ == "__main__":
