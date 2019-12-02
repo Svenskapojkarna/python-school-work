@@ -1,23 +1,22 @@
 def muodosta_verkko(lista):
     rivi = lista[0].rstrip().split()
     kaupungit = int(rivi[0])
-    tiet = int(rivi[1])
-    valit = nollaverkko(kaupungit)
-    verkko = []
-    for i in range(1, kaupungit):
-      for j in range(1, tiet + 1):
-        solmu = lista[j].rstrip().split()
-        if int(solmu[0]) == i:
-          valit[int(solmu[1]) - 1] = int(solmu[2])
-      verkko.append(valit)
-      valit = nollaverkko(kaupungit)
+    verkko = nollaverkko(kaupungit)
     maali = lista[len(lista) - 1]
+    for i in range(1, len(lista) - 1):
+        rivi = lista[i].rstrip().split()
+        verkko[int(rivi[0]) - 1][int(rivi[1]) - 1] = int(rivi[2])
+    verkko.pop()
     return verkko, maali
 
 def nollaverkko(pituus):
     nolla = []
+    rivi = []
     for i in range(0, pituus):
-        nolla.append(0)
+        for j in range(0, pituus):
+            rivi.append(0)
+        nolla.append(rivi)
+        rivi = []
     return nolla
 
 def etsi_halvin(halvin, lista):
