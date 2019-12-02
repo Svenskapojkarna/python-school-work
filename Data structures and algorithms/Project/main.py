@@ -51,7 +51,7 @@ def reitti(verkko, maali):
         if reitti[-1] != solmu + 1:
             reitti.append(solmu + 1)
         lista = verkko[solmu]
-        while naapurit(lista) and edellinen > 0:
+        while naapurit(lista) and len(edellinen) > 0:
             solmu = edellinen.pop()
             lista = verkko[solmu]
         seuraava, halvin = etsi_halvin(halvin, lista)
@@ -69,7 +69,7 @@ def reitti(verkko, maali):
     return reitti, korkein
 	
 def main():
-    with open("./graph_testdata/graph_ADS2018_10_2.txt", "r") as kohde:
+    with open("./verkko.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
