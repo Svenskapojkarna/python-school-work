@@ -19,63 +19,37 @@ def nollaverkko(pituus):
         rivi = []
     return nolla
 
-def etsi_halvin(halvin, lista):
-    solmu = 0
-    for j, i in enumerate(lista):
-        if i == 0:
-            pass
-        elif i < halvin:
-            halvin = i
-            solmu = j
-    if solmu > 0:
-        return solmu, halvin
-    else:
-        return None, 1000
-	
-def naapurit(lista):
+def etsi_kallein(lista):
+    kallein = 0
     for i in lista:
-        if i != 0:
-            return False
-    return True
+        if i > kallein:
+            kallein = i
+    return kallein
+	
+def etsi_halvin(lista):
+    halvin = etsi_kallein(lista)
+    solmu = None
+    for index, i in enumerate(lista):
+        if i < halvin and i != 0:
+            halvin = i
+            solmu = index
+    return halvin, solmu
 
 def reitti(verkko, maali):
     maali -= 1
-    halvin = 1000
-    solmu = 0
-    korkein = 0
-    reitti = [1]
-    edellinen = []
-    lista = []
-    while solmu != maali:
-        if reitti[-1] != solmu + 1:
-            reitti.append(solmu + 1)
-        lista = verkko[solmu]
-        while naapurit(lista) and len(edellinen) > 0:
-            solmu = edellinen.pop()
-            lista = verkko[solmu]
-        seuraava, halvin = etsi_halvin(halvin, lista)
-        if halvin == 1000:
-            if len(edellinen) > 0:
-                solmu = edellinen.pop()
-            reitti.pop()
-        else:
-            if halvin > korkein:
-                korkein = halvin
-            verkko[solmu][seuraava] = 0
-            edellinen.append(solmu)
-            solmu = seuraava
-    reitti.append(maali + 1)
-    return reitti, korkein
+    jono = []
+    jono.append(verkko.pop(0))
+    halvin, solmu = etsi_halvin(jono[0])
+    return halvin, solmu
 	
 def main():
     with open("./verkko.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
-    vastaus, korkein = reitti(verkko, int(maali))
+    vastaus, solmu = reitti(verkko, int(maali))
     print(vastaus)
-    print(korkein)
+    print(solmu)
     
-
 if __name__ == "__main__":
     main()
