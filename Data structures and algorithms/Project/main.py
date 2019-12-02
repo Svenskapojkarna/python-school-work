@@ -26,30 +26,47 @@ def etsi_kallein(lista):
             kallein = i
     return kallein
 	
-def etsi_halvin(lista):
-    halvin = etsi_kallein(lista)
+def etsi_halvin(lista, halvin):
+    umpikuja = True
     solmu = None
     for index, i in enumerate(lista):
         if i < halvin and i != 0:
             halvin = i
             solmu = index
-    return halvin, solmu
+            umpikuja = False
+    if umpikuja:
+        return 0, 0
+    else:
+        return halvin, solmu
 
 def reitti(verkko, maali):
     maali -= 1
     jono = []
     jono.append(verkko.pop(0))
-    halvin, solmu = etsi_halvin(jono[0])
-    return halvin, solmu
+    kallein = etsi_kallein(jono[0])
+    kesken = True
+    while len(jono) != 0 and kesken:
+        solmu = jono[-1]
+        halvin, paikka = etsi_halvin(solmu, kallein)
+        if paikka == maali and halvin != 0:
+            kesken = False
+        elif halvin != 0:
+            solmu[paikka] = 0
+            kallein = halvin
+            jono.pop()
+            jono.append(solmu)
+            jono.append(verkko[paikka])
+        else:
+            # Tänne taaksepäin meneminen
+    return solmu
 	
 def main():
     with open("./verkko.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
-    vastaus, solmu = reitti(verkko, int(maali))
+    vastaus = reitti(verkko, int(maali))
     print(vastaus)
-    print(solmu)
     
 if __name__ == "__main__":
     main()
