@@ -19,18 +19,26 @@ def nollaverkko(pituus):
         rivi = []
     return nolla
 
+def tyhja(lista):
+    for i in lista:
+        if i != 0:
+            return False
+    return True
+
 def etsi_kallein(lista):
     kallein = 0
-    for i in lista:
+    solmu = 0
+    for index, i in enumerate(lista):
         if i > kallein:
             kallein = i
-    return kallein
+            solmu = index
+    return kallein, solmu
 	
 def etsi_halvin(lista, halvin):
     umpikuja = True
     solmu = None
     for index, i in enumerate(lista):
-        if i < halvin and i != 0:
+        if i <= halvin and i != 0:
             halvin = i
             solmu = index
             umpikuja = False
@@ -39,34 +47,56 @@ def etsi_halvin(lista, halvin):
     else:
         return halvin, solmu
 
+def vierailtu(verkko, jono, paikka):
+    for i in range(0, len(verkko)):
+        verkko[i][paikka] = 0
+    for i in range(0, len(jono)):
+        jono[i][paikka] = 0
+    return verkko, jono
+
 def reitti(verkko, maali):
     maali -= 1
     jono = []
-    jono.append(verkko.pop(0))
-    kallein = etsi_kallein(jono[0])
+    jono.append(verkko[0])
+    kallein, solmu = etsi_kallein(jono[0])
+    korkein, paikka = etsi_halvin(jono[-1], kallein)
     kesken = True
+    reitti = [1]
     while len(jono) != 0 and kesken:
         solmu = jono[-1]
         halvin, paikka = etsi_halvin(solmu, kallein)
         if paikka == maali and halvin != 0:
+            reitti.append(paikka + 1)
             kesken = False
         elif halvin != 0:
-            solmu[paikka] = 0
-            kallein = halvin
+            verkko, jono = vierailtu(verkko, jono, paikka)
+            if halvin > korkein:
+                korkein = halvin
             jono.pop()
             jono.append(solmu)
             jono.append(verkko[paikka])
+            reitti.append(paikka + 1)
+            print("Kallein: {}".format(kallein))
+        elif tyhja(jono[-1]):
+            jono.pop()
+            reitti.pop()
         else:
-            # Tänne taaksepäin meneminen
-    return solmu
+            kallein, solmu = etsi_kallein(jono[-1])
+            jono[-1][solmu] = 0
+        print(jono)
+        print(reitti)
+        print('---------------------')
+    return reitti, korkein
 	
 def main():
+    #with open("./graph_testdata/graph_ADS2018_10_1.txt", "r") as kohde:
     with open("./verkko.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
-    vastaus = reitti(verkko, int(maali))
+    vastaus, kallein = reitti(verkko, int(maali))
     print(vastaus)
+    print(kallein)
     
 if __name__ == "__main__":
     main()
