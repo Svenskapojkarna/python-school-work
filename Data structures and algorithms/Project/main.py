@@ -3,15 +3,17 @@
 
 import sys
 import os
-
+import timeit
 # Class Graph to contain the graph and make the Minimum spanning tree
-# Copied from https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
 class Graph(): 
+
+    # Class constructor
     def __init__(self, vertices): 
         self.V = vertices 
         self.graph = [[0 for column in range(vertices)] 
                         for row in range(vertices)] 
 
+    # Method to find the minimum key
     def minKey(self, key, mstSet): 
         min = sys.maxsize 
 
@@ -22,54 +24,32 @@ class Graph():
 
         return min_index
 
-    # This method originally printed the MST, but I modified to to save it to text file similarly to test data files.
+    # Method to save the minimum spanning tree to text file similarly to test data text files
     def printMST(self, parent): 
         f = open("temp.txt","w")
         for i in range(1, self.V):
             f.write("{} {} {}\n".format(parent[i] + 1, i + 1, self.graph[i][ parent[i] ]))
         f.close()
 
-    # Function to construct and print MST for a graph 
-    # represented using adjacency matrix representation 
-    def primMST(self): 
-
-        # Key values used to pick minimum weight edge in cut 
+    # Function to construct minimum spanning tree using Prim's minimum spanning tree algorithm
+    def primMST(self):  
         key = [sys.maxsize] * self.V 
-        parent = [None] * self.V # Array to store constructed MST 
-        # Make key 0 so that this vertex is picked as first vertex 
+        parent = [None] * self.V
         key[0] = 0
         mstSet = [False] * self.V 
-
-        parent[0] = -1 # First node is always the root of 
-
-        for cout in range(self.V): 
-
-            # Pick the minimum distance vertex from 
-            # the set of vertices not yet processed. 
-            # u is always equal to src in first iteration 
+        parent[0] = -1
+        for i in range(self.V): 
             u = self.minKey(key, mstSet) 
-
-            # Put the minimum distance vertex in 
-            # the shortest path tree 
             mstSet[u] = True
-
-            # Update dist value of the adjacent vertices 
-            # of the picked vertex only if the current 
-            # distance is greater than new distance and 
-            # the vertex in not in the shotest path tree 
             for v in range(self.V): 
-                # graph[u][v] is non zero only for adjacent vertices of m 
-                # mstSet[v] is false for vertices not yet included in MST 
-                # Update the key only if graph[u][v] is smaller than key[v] 
                 if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]: 
                         key[v] = self.graph[u][v] 
                         parent[v] = u 
-
         self.printMST(parent) 
 
 # Function to create a graph full of zeroes to be used in creating the graph from text file
-# Par: length = Int
-# Return: zero = Matrix (Array of arrays)
+# Par:      length = Int
+# Return:   zero = Matrix (Array of arrays)
 def zerograph(length):
     zero = []
     line = []
@@ -81,8 +61,8 @@ def zerograph(length):
     return zero
 
 # Function to create the graph from the text file
-# Par: list = Text from the text file
-# return: graph = Matrix (Array of arrays)
+# Par:      list = Text from the text file
+# return:   graph = Matrix (Array of arrays)
 def make_graph(list):
     line = list[0].rstrip().split()
     cities = int(line[0])
@@ -111,8 +91,8 @@ def find_high(list):
     return high, node
 
 # Function to check if the node has unvisited neighbours
-# Par: List of ints
-# Return: False if node has unvisited neighbours, true if doesn't have
+# Par:      list = array of ints
+# Return:   False if node has unvisited neighbours, true if doesn't have
 def empty(list):
     for i in list:
         if i != 0:
@@ -187,6 +167,7 @@ def find_highest(list, graph):
 # Step 9: Print the results.
 # Step 10: Delete the temporary text file generated at step 3.
 def main():
+    start = timeit.default_timer()
     with open("./graph_large_testdata/graph_ADS2018_2000.txt", "r") as target:
         text = target.readlines()
         target.close()
@@ -206,6 +187,8 @@ def main():
     print("Best route: {}".format(route))
     print("Highest point: {}".format(high))
     os.remove("temp.txt")
+    stop = timeit.default_timer()
+    print('Time: ', stop - start)  
 
 if __name__ == "__main__":
     main()
