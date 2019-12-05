@@ -64,6 +64,7 @@ def reitti(verkko, maali):
     reitti = [1]
     while len(jono) != 0 and kesken:
         solmu = jono[-1]
+        print("Kallein: {}".format(kallein))
         halvin, paikka = etsi_halvin(solmu, kallein)
         if paikka == maali and halvin != 0:
             reitti.append(paikka + 1)
@@ -76,7 +77,6 @@ def reitti(verkko, maali):
             jono.append(solmu)
             jono.append(verkko[paikka])
             reitti.append(paikka + 1)
-            print("Kallein: {}".format(kallein))
         elif tyhja(jono[-1]):
             jono.pop()
             reitti.pop()
@@ -89,8 +89,8 @@ def reitti(verkko, maali):
     return reitti, korkein
 	
 def main():
-    #with open("./graph_testdata/graph_ADS2018_10_1.txt", "r") as kohde:
-    with open("./verkko.txt", "r") as kohde:
+    with open("./graph_testdata/graph_ADS2018_10_1.txt", "r") as kohde:
+    #with open("./verkko.txt", "r") as kohde:
       lista = kohde.readlines()
       kohde.close()
     verkko, maali = muodosta_verkko(lista)
