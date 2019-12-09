@@ -1,9 +1,10 @@
-# Tietorakenteet ja Algoritmit lopputyö
-# Aleksi Hytönen, 2462633
+# Tietorakenteet ja Algoritmit lopputyo
+# Aleksi Hytonen, 2462633
 
-import sys
-import os
-import timeit
+import sys          # Needed for maxsize
+import os           # Needed to remove the temporary file
+import timeit       # Needed to show execution time
+
 # Class Graph to contain the graph and make the Minimum spanning tree
 class Graph(): 
 
@@ -181,7 +182,7 @@ def main():
     newGraph, goal = modified(new, text)
     highGraph = []
     for i in newGraph:
-        highGraph.append(i.copy())
+        highGraph.append(i[:])
     route = find_route(newGraph, int(goal))
     high = find_highest(route, highGraph)
     print("Best route: {}".format(route))
